@@ -2,10 +2,10 @@
   <div class="flex justify-center">
     <navbar>
       <div>
-        <img src="../assets/images/logo_jubo.png" class="h-14" alt="">
+        <img src="../../assets/images/logo_jubo.png" class="h-14" alt="">
       </div>
       <div>
-        <button class="btn-login">Login</button>
+        <button @click="() => emit('login')" class="btn-login">Login</button>
       </div>
     </navbar>
   </div>
@@ -13,7 +13,9 @@
 
 <script>
 export default {
-
+  setup (_, { emit }) {
+    return { emit }
+  }
 }
 </script>
 

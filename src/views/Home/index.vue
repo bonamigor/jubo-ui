@@ -54,8 +54,19 @@
 </template>
 
 <script>
+import useModal from '../../hooks/useModal'
 
 export default {
+  setup () {
+    const modal = useModal()
+    const handleLogin = () => {
+      modal.open({ component: 'ModalLogin' })
+    }
+
+    return {
+      handleLogin
+    }
+  }
 }
 </script>
 
