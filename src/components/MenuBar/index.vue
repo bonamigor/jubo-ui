@@ -5,7 +5,7 @@
         <img src="../../assets/images/logo_jubo.png" class="h-14" alt="">
       </div>
       <div>
-        <button @click="() => emit('login')" class="btn-login">Login</button>
+        <button @click="() => emit('login')" class="btn-login">Faça o Login</button>
       </div>
     </navbar>
   </div>
@@ -21,7 +21,7 @@ export default {
 
 <style lang="postcss" scoped>
 navbar {
-  @apply flex justify-between items-center bg-blue-400 px-4 w-full sm:w-6/12
+  @apply flex justify-between items-center bg-blue-400 px-4 w-full sm:w-10/12
 }
 
 .btn-login {
