@@ -1,5 +1,6 @@
 import axios from 'axios'
 import AuthService from './auth'
+import UserService from './user'
 
 const API_ENVS = {
   local: 'http://localhost:3000'
@@ -18,5 +19,6 @@ httpClient.interceptors.response.use((response) => response, (error) => {
 })
 
 export default {
-  auth: AuthService(httpClient)
+  auth: AuthService(httpClient),
+  user: UserService(httpClient)
 }
