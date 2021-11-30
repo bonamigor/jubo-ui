@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { reactive } from 'vue'
+import { reactive, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useField } from 'vee-validate'
 import { useToast } from 'vue-toastification'
@@ -52,6 +52,7 @@ import useModal from '../../hooks/useModal'
 import Icon from '../Icon'
 import { validateEmptyAndLength3, validateEmptyAndEmail } from '../../utils/validators'
 import services from '../../services'
+import store from '../../store/index'
 
 export default {
   components: { Icon },
@@ -94,9 +95,15 @@ export default {
 
         if (!errors) {
           window.localStorage.setItem('token', data.token)
+          await store.dispatch('getUserData', data.user)
+          const isAdmin = computed(() => store.getters.isAdmin)
           setTimeout(() => {
             state.isLoading = false
-            router.push({ name: 'Dashboard' })
+            if (isAdmin.value === true) {
+              router.push({ name: 'Dashboard' })
+            } else {
+              router.push({ name: 'Inicial' })
+            }
             modal.close()
           }, 1000)
           return

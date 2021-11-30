@@ -38,9 +38,6 @@
     </div>
   </div>
 </div>
-<div class="flex justify-center items-center text-center">
-  <div class="footer">jubo solucoes</div>
-</div>
 
 </template>
 
@@ -82,7 +79,4 @@ button {
   @apply bg-blue-400 hover:bg-gray-400 text-white hover:text-black rounded-full px-2
 }
 
-.footer {
-  @apply fixed -bottom-0 bg-blue-400 w-full sm:w-10/12 rounded-t-lg font-medium text-center text-gray-800
-}
 </style>

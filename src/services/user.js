@@ -1,6 +1,6 @@
 export default httpClient => ({
   getUser: async ({ email, senha }) => {
-    const response = await httpClient.post('/api/autenticacao', {
+    const response = await httpClient.post('/api/users/getUser', {
       email,
       senha
     })

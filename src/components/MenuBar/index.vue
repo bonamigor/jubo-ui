@@ -4,17 +4,73 @@
       <div>
         <img src="../../assets/images/logo_jubo.png" class="h-14" alt="">
       </div>
-      <div>
-        <button @click="() => emit('login')" class="btn-login">Faça o Login</button>
+      <div class="flex mx-4">
+        <div v-if="isAdmin && store.state.user.nome" class="flex">
+          <div class="dropdown">
+            <button class="btn-menu">Cadastro</button>
+            <div class="dropdown-content rounded-b-lg">
+              <div class="flex flex-col justify-start justify-items-start text-sm mt-1 animate__animated animate__fadeIn">
+                <button class="btn-dropdown">- Usuários</button>
+                <button class="btn-dropdown mt-1">- Clientes</button>
+                <button class="btn-dropdown mt-1">- Empresa</button>
+                <button class="btn-dropdown mt-1">- Estantes</button>
+                <button class="btn-dropdown mt-1">- Produtos</button>
+              </div>
+            </div>
+          </div>
+          <div>
+            <button class="btn-menu">Pedidos</button>
+          </div>
+          <div class="dropdown">
+            <button class="btn-menu">Relatórios</button>
+            <div class="dropdown-content rounded-b-lg">
+              <div class="flex flex-col justify-start justify-items-start text-sm mt-1 animate__animated animate__fadeIn">
+                <button class="btn-dropdown">- Vendas</button>
+                <button class="btn-dropdown mt-1">- Pedidos</button>
+                <button class="btn-dropdown mt-1">- Produtos</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-else class="flex">
+          <div v-if="store.state.user.nome">
+            <button class="btn-menu">Fazer Pedidos</button>
+          </div>
+          <div v-if="store.state.user.nome">
+            <button class="btn-menu">Ver Pedidos</button>
+          </div>
+        </div>
+        <div v-if="store.state.user.nome === ''">
+          <button @click="() => emit('login')" class="btn-login">Faça o Login</button>
+        </div>
+        <div v-else>
+          <button @click="handleLogout" class="btn-login">{{ store.state.user.nome + ' | Sair' }}</button>
+        </div>
       </div>
     </navbar>
   </div>
 </template>
 
 <script>
+import { computed } from 'vue'
+import { useRouter } from 'vue-router'
+import store from '../../store/index'
+
 export default {
   setup (_, { emit }) {
-    return { emit }
+    const router = useRouter()
+
+    const handleLogout = () => {
+      window.localStorage.removeItem('token')
+      store.dispatch('cleanCurrentUser')
+      router.push({ name: 'Home' })
+    }
+
+    const isAdmin = computed(() => store.getters.isAdmin)
+
+    const userData = computed(() => store.getters.getUser)
+
+    return { emit, store, userData, isAdmin, handleLogout }
   }
 }
 </script>
@@ -25,6 +81,33 @@ navbar {
 }
 
 .btn-login {
-  @apply bg-white hover:bg-gray-500 text-black hover:text-white rounded-full px-2
+  @apply bg-white hover:bg-gray-500 text-black hover:text-white rounded-full px-2 mx-2
 }
+
+.btn-menu {
+  @apply border-2 border-white hover:bg-gray-500 text-white hover:text-white rounded-full px-2 mx-2
+}
+
+.btn-dropdown {
+  @apply bg-gray-500 hover:bg-gray-300 text-white hover:text-black rounded-full px-2 mx-2 shadow-lg
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  left: -15px;
+  min-width: 160px;
+  padding: 1px 16px;
+  z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
 </style>

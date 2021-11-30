@@ -42,7 +42,6 @@ export default {
     })
 
     const handleModalToggle = (payload) => {
-      console.log('payload', payload)
       if (payload.status) {
         state.component = payload.component
         state.props = payload.props
