@@ -2,6 +2,7 @@ import axios from 'axios'
 import router from '../router'
 import AuthService from './auth'
 import UserService from './user'
+import ClienteService from './cliente'
 
 const API_ENVS = {
   local: 'http://localhost:3000'
@@ -9,6 +10,16 @@ const API_ENVS = {
 
 const httpClient = axios.create({
   baseURL: API_ENVS.local
+})
+
+httpClient.interceptors.request.use(config => {
+  const token = window.localStorage.getItem('token')
+
+  if (token) {
+    config.headers.common.Authorization = `Bearer ${token}`
+  }
+
+  return config
 })
 
 httpClient.interceptors.response.use((response) => response, (error) => {
@@ -25,5 +36,6 @@ httpClient.interceptors.response.use((response) => response, (error) => {
 
 export default {
   auth: AuthService(httpClient),
-  user: UserService(httpClient)
+  user: UserService(httpClient),
+  cliente: ClienteService(httpClient)
 }

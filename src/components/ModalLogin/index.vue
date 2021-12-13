@@ -95,7 +95,12 @@ export default {
 
         if (!errors) {
           window.localStorage.setItem('token', data.token)
-          await store.dispatch('getUserData', data.user)
+          console.log(data.user)
+          window.sessionStorage.setItem('userId', data.user.id)
+          window.sessionStorage.setItem('userName', data.user.nome)
+          window.sessionStorage.setItem('userEmail', data.user.email)
+          window.sessionStorage.setItem('userAdmin', data.user.admin)
+          await store.dispatch('setUserData', data.user)
           const isAdmin = computed(() => store.getters.isAdmin)
           setTimeout(() => {
             state.isLoading = false
@@ -118,14 +123,14 @@ export default {
         }
 
         if (errors.status === 400) {
-          toast.error('Ocorreu um erro ao fazer o Login.')
+          toast.error('Ocorreu um erro ao fazer o Login. Pintos')
         }
 
         state.isLoading = false
       } catch (error) {
         state.isLoading = false
         state.hasErrors = !!error
-        toast.error('Ocorreu um erro ao fazer o Login.')
+        toast.error('Ocorreu um erro ao fazer o Login. ' + error)
       }
     }
 

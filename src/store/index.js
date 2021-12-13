@@ -1,8 +1,14 @@
 import { createStore } from 'vuex'
 
+const id = window.sessionStorage.getItem('userId')
+const nome = window.sessionStorage.getItem('userName')
+const email = window.sessionStorage.getItem('userEmail')
+const admin = window.sessionStorage.getItem('userAdmin')
+
 export default createStore({
+
   state: {
-    user: { id: '', nome: '', email: '', admin: '' }
+    user: { id: id, nome: nome, email: email, admin: admin }
   },
   getters: {
     isAdmin: state => {
@@ -31,11 +37,11 @@ export default createStore({
     }
   },
   actions: {
-    async getUserData ({ commit }, payload) {
+    async setUserData ({ commit }, payload) {
       try {
         commit('CURRENT_USER', payload)
       } catch (error) {
-        console.log('Erro no Store - Get User Data', error)
+        console.log('Erro no Store - Set User Data', error)
       }
     },
     cleanCurrentUser ({ commit }) {

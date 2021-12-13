@@ -1,8 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-const Home = () => import('../views/Home/index.vue')
-const Dashboard = () => import('../views/Dashboard/index.vue')
-const Inicial = () => import('../views/Inicial/index.vue')
+const Home = () => import('../views/Home/Home.vue')
+const Dashboard = () => import('../views/Dashboard/Dashboard.vue')
+const Inicial = () => import('../views/Inicial/Inicial.vue')
+const CadastroCliente = () => import('../views/Cadastro/Cliente.vue')
+const ListaCliente = () => import('../views/Lista/Cliente.vue')
 
 const routes = [
   {
@@ -14,6 +16,33 @@ const routes = [
     path: '/dashboard',
     name: 'Dashboard',
     component: Dashboard,
+    meta: {
+      hasAuth: true,
+      isAdmin: true
+    }
+  },
+  {
+    path: '/cadastro-cliente',
+    name: 'CadastroCliente',
+    component: CadastroCliente,
+    meta: {
+      hasAuth: true,
+      isAdmin: true
+    }
+  },
+  {
+    path: '/atualizar-cliente/:id',
+    name: 'AtualizarCliente',
+    component: CadastroCliente,
+    meta: {
+      hasAuth: true,
+      isAdmin: true
+    }
+  },
+  {
+    path: '/listar-clientes',
+    name: 'ListaCliente',
+    component: ListaCliente,
     meta: {
       hasAuth: true,
       isAdmin: true
