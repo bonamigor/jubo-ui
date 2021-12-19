@@ -9,14 +9,10 @@
               <div class="flex flex-col col-span-6 text-center">
                 <div v-if="!route.params.id">
                   <h1 class="text-6xl">Cadastro de Cliente</h1>
+                  <span>Preencha o formulário e clique em Cadastrar para criar um Cliente.</span>
                 </div>
                 <div v-else>
                   <h1 class="text-6xl">Atualizar Cliente</h1>
-                </div>
-                <div v-if="!route.params.id" class="mt-2">
-                  <span>Preencha o formulário e clique em Cadastrar para criar um Cliente.</span>
-                </div>
-                <div v-else class="mt-2">
                   <span>Realize as alterações e clique em Atualizar para salvar.</span>
                 </div>
               </div>
@@ -82,6 +78,7 @@ import { useToast } from 'vue-toastification'
 import { useRoute, useRouter } from 'vue-router'
 import services from '../../services'
 import { cleanInput } from '../../utils/cleanInput'
+import Swal from 'sweetalert2'
 
 export default {
   components: {
@@ -140,11 +137,20 @@ export default {
         const { data, errors } = await services.cliente.cadastrarCliente(cliente)
 
         if (!errors) {
-          toast.success(data.message)
+          Swal.fire(
+            'Cadastro de Cliente',
+            `${data.message}`,
+            'success'
+          )
           event.target.reset()
         }
+
+        Swal.fire(
+          'Cadastro de Cliente',
+          `${errors.statusText}`,
+          'warning'
+        )
       } catch (error) {
-        console.log(error)
         toast.error('Ocorreu um erro ao cadastrar o Cliente.' + error)
       }
     }
@@ -152,7 +158,6 @@ export default {
     const handleUpdate = async (cliente) => {
       try {
         toast.clear()
-        console.log(cliente)
         cliente.cnpj = cleanInput(cliente.cnpj)
         cliente.cep = cleanInput(cliente.cep)
         cliente.telefone = cleanInput(cliente.telefone)
@@ -161,11 +166,14 @@ export default {
         const { data, errors } = await services.cliente.atualizarCliente(cliente)
 
         if (!errors) {
-          toast.success(data.message)
+          Swal.fire(
+            'Atualização de Cliente',
+            `${data.message}`,
+            'success'
+          )
           router.push({ name: 'ListaCliente' })
         }
       } catch (error) {
-        console.log(error)
         toast.error('Ocorreu um erro ao atualizar o Cliente.' + error)
       }
     }

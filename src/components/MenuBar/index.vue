@@ -10,7 +10,7 @@
             <button class="btn-menu">Cadastro</button>
             <div class="dropdown-content rounded-b-lg">
               <div class="flex flex-col justify-start justify-items-start text-sm mt-1 animate__animated animate__fadeIn">
-                <button class="btn-dropdown">- Usuários</button>
+                <button @click="() => router.push({ name: 'CadastroUsuario' })" class="btn-dropdown">- Usuários</button>
                 <button @click="() => router.push({ name: 'CadastroCliente' })" class="btn-dropdown mt-1">- Clientes</button>
                 <button class="btn-dropdown mt-1">- Empresa</button>
                 <button class="btn-dropdown mt-1">- Estantes</button>
@@ -25,7 +25,8 @@
             <button class="btn-menu">Relatórios</button>
             <div class="dropdown-content rounded-b-lg">
               <div class="flex flex-col justify-start justify-items-start text-sm mt-1 animate__animated animate__fadeIn">
-                <button @click="() => router.push({ name: 'ListaCliente' })" class="btn-dropdown">- Clientes</button>
+                <button @click="() => router.push({ name: 'ListaUsuario' })" class="btn-dropdown">- Usuários</button>
+                <button @click="() => router.push({ name: 'ListaCliente' })" class="btn-dropdown mt-1">- Clientes</button>
                 <button @click="handleSession" class="btn-dropdown mt-1">- Vendas</button>
                 <button class="btn-dropdown mt-1">- Pedidos</button>
                 <button class="btn-dropdown mt-1">- Produtos</button>

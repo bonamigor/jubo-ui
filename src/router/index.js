@@ -4,7 +4,9 @@ const Home = () => import('../views/Home/Home.vue')
 const Dashboard = () => import('../views/Dashboard/Dashboard.vue')
 const Inicial = () => import('../views/Inicial/Inicial.vue')
 const CadastroCliente = () => import('../views/Cadastro/Cliente.vue')
+const CadastroUsuario = () => import('../views/Cadastro/Usuario.vue')
 const ListaCliente = () => import('../views/Lista/Cliente.vue')
+const ListaUsuario = () => import('../views/Lista/Usuario.vue')
 
 const routes = [
   {
@@ -43,6 +45,33 @@ const routes = [
     path: '/listar-clientes',
     name: 'ListaCliente',
     component: ListaCliente,
+    meta: {
+      hasAuth: true,
+      isAdmin: true
+    }
+  },
+  {
+    path: '/cadastro-usuario',
+    name: 'CadastroUsuario',
+    component: CadastroUsuario,
+    meta: {
+      hasAuth: true,
+      isAdmin: true
+    }
+  },
+  {
+    path: '/atualizar-usuario/:userid',
+    name: 'AtualizarUsuario',
+    component: CadastroUsuario,
+    meta: {
+      hasAuth: true,
+      isAdmin: true
+    }
+  },
+  {
+    path: '/listar-usuarios',
+    name: 'ListaUsuario',
+    component: ListaUsuario,
     meta: {
       hasAuth: true,
       isAdmin: true

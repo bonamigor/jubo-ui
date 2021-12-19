@@ -76,7 +76,6 @@ export default httpClient => ({
       errors
     }
   },
-
   deletarCliente: async (id) => {
     const response = await httpClient.delete(
       `/api/clientes/${id}`
