@@ -95,7 +95,6 @@ export default {
 
         if (!errors) {
           window.localStorage.setItem('token', data.token)
-          console.log(data.user)
           window.sessionStorage.setItem('userId', data.user.id)
           window.sessionStorage.setItem('userName', data.user.nome)
           window.sessionStorage.setItem('userEmail', data.user.email)

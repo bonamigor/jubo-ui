@@ -4,10 +4,10 @@
   <div class="flex flex-col w-10/12">
     <div class="flex flex-col justrify-center items-center my-5">
       <div class="text-4xl">
-        <h1>Lista de Clientes</h1>
+        <h1>Lista de Usuários</h1>
       </div>
       <div class="text-xl text-center mt-5">
-        Esses são os os Clientes cadastrados no Banco de Dados.
+        Esses são os Usuários cadastrados no Banco de Dados.
       </div>
     </div>
     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -20,19 +20,13 @@
                   ID
                 </th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Cliente
-                </th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  CNPJ
+                  Nome
                 </th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   E-mail
                 </th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Telefone
-                </th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Cidade / Estado
+                  Administrador
                 </th>
                 <th scope="col" class="relative px-6 py-3">
                   <span class="sr-only">Ações</span>
@@ -40,28 +34,22 @@
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-              <tr v-for="cliente in clientes" :key="cliente.id">
+              <tr v-for="user in users" :key="user.id">
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm text-gray-900">{{ cliente.id }}</div>
+                  <div class="text-sm text-gray-900">{{ user.id }}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm text-gray-900">{{ cliente.nome }}</div>
+                  <div class="text-sm text-gray-900">{{ user.nome }}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm text-gray-900">{{ cnpjFilter(cliente.cnpj) }}</div>
+                  <div class="text-sm text-gray-900">{{ user.email }}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm text-gray-900">{{ cliente.email }}</div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm text-gray-900">{{ phoneFilter(cliente.telefone) }}</div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm text-gray-900">{{ `${cliente.cidade} / ${cliente.estado}` }}</div>
+                  <div class="text-sm text-gray-900">{{ user.admin ? 'SIM' : 'NÃO' }}</div>
                 </td>
                 <td class="px-4 py-4 text-center text-sm font-medium">
-                  <a href="#" @click="editar(cliente)" class="text-indigo-600 hover:text-indigo-900">Editar</a> /
-                  <a href="#" @click="excluir(cliente)" class="text-indigo-600 hover:text-indigo-900">Excluir</a>
+                  <a href="#" @click="editar(user)" class="text-indigo-600 hover:text-indigo-900">Editar</a> /
+                  <a href="#" @click="excluir(user)" class="text-indigo-600 hover:text-indigo-900">Excluir</a>
                 </td>
               </tr>
             </tbody>
@@ -76,51 +64,38 @@
 <script>
 import { onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { useToast } from 'vue-toastification'
 import services from '../../services'
-import store from '../../store/clientes'
+import store from '../../store/user'
 import Swal from 'sweetalert2'
+import { useToast } from 'vue-toastification'
 
 export default {
   setup () {
     const router = useRouter()
-    const toast = useToast()
 
     onMounted(() => {
-      fetchClientes()
+      fetchUsers()
     })
 
-    const clientes = computed(() => store.getters.getClientes)
+    const users = computed(() => store.getters.getUsers)
 
-    const fetchClientes = async () => {
-      const { data, errors } = await services.cliente.listarTodosOsClientes()
+    const fetchUsers = async () => {
+      const { data, errors } = await services.user.listarTodosOsUsuarios()
 
       if (!errors) {
-        store.dispatch('getClientes', data.clientes)
+        store.dispatch('getUsers', data.users)
       }
     }
 
-    const phoneFilter = phone => {
-      if (phone.length === 11) {
-        return `(${phone.substring(0, 2)}) ${phone.substring(2, 7)}-${phone.substring(7, 11)}`
-      } else {
-        return `(${phone.substring(0, 2)}) ${phone.substring(2, 6)}-${phone.substring(6, 10)}`
-      }
+    const editar = (user) => {
+      router.push({ name: 'AtualizarUsuario', params: { userid: user.id } })
     }
 
-    const cnpjFilter = cnpj => {
-      return `${cnpj.substring(0, 2)}.${cnpj.substring(2, 5)}.${cnpj.substring(5, 8)}/${cnpj.substring(8, 12)}-${cnpj.substring(12, 14)}`
-    }
-
-    const editar = (cliente) => {
-      router.push({ name: 'AtualizarCliente', params: { id: cliente.id } })
-    }
-
-    const excluir = async (cliente) => {
+    const excluir = async (user) => {
       try {
         Swal.fire({
-          title: 'Exclusão de Cliente',
-          text: 'Deseja mesmo excluir este Cliente?',
+          title: 'Exclusão de Usuário',
+          text: 'Deseja mesmo excluir este Usuário?',
           icon: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
@@ -128,7 +103,7 @@ export default {
           confirmButtonText: 'Sim, por favor!',
           cancelButtonText: 'Não.'
         }).then(async (dado) => {
-          const { data, errors } = await services.cliente.deletarCliente(cliente.id)
+          const { data, errors } = await services.user.deletarUsuario(user.id)
           if (!errors) {
             Swal.fire(
               'Exclusão de Usuário',
@@ -139,15 +114,13 @@ export default {
           }
         })
       } catch (error) {
-        toast.error(error)
+        useToast.error(error)
       }
     }
 
     return {
-      fetchClientes,
-      clientes,
-      phoneFilter,
-      cnpjFilter,
+      users,
+      fetchUsers,
       editar,
       excluir
     }
