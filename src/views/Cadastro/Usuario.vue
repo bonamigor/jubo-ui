@@ -1,4 +1,3 @@
-import { reactive } from 'vue';
 <template>
   <div class="flex flex-col justify-center items-center mt-10">
     <div class="flex flex-col w-9/12 justify-center items-center">
@@ -10,7 +9,7 @@ import { reactive } from 'vue';
         <div v-else>
           <h1 class="text-3xl sm:text-6xl">Atualizar Usuário</h1>
           <span class="text-sm sm:text-lg mt-2">Realize as alterações e clique em Atualizar para salvar.</span>
-        </div>-
+        </div>
       </div>
       <div >
         <form class="mb-10" @submit.prevent="handleSubmit">
@@ -88,6 +87,7 @@ export default {
 
     // Cadastro de Usuarios
     const handleSubmit = async (event) => {
+      console.log(usuario.admin)
       if (usuario.admin !== true) {
         const { data, errors } = await services.user.cadastrarUsuarioRegular({
           nome: usuario.nome,
@@ -98,23 +98,26 @@ export default {
         if (!errors) {
           Swal.fire(
             `${data.message}`,
+            'Clique no botão para fechar.',
             'success'
           )
           event.target.reset()
         }
-      }
-      const { data, errors } = await services.user.cadastrarUsuarioAdmin({
-        nome: usuario.nome,
-        email: usuario.email,
-        senha: usuario.senha,
-        admin: usuario.admin
-      })
-      if (!errors) {
-        Swal.fire(
+      } else {
+        const { data, errors } = await services.user.cadastrarUsuarioAdmin({
+          nome: usuario.nome,
+          email: usuario.email,
+          senha: usuario.senha,
+          admin: usuario.admin
+        })
+        if (!errors) {
+          Swal.fire(
           `${data.message}`,
+          'Clique no botão para fechar.',
           'success'
-        )
-        event.target.reset()
+          )
+          event.target.reset()
+        }
       }
     }
 

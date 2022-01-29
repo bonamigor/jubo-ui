@@ -4,17 +4,17 @@
       <div>
         <img src="../../assets/images/logo_jubo.png" class="h-14" alt="">
       </div>
-      <div class="flex mx-4">
-        <div v-if="isAdmin && store.state.user.nome" class="flex">
+      <div class="flex flex-col justify-center my-2 md:flex-row md:mx-4">
+        <div v-if="isAdmin && store.state.user.nome" class="flex flex-col items-center my-2 md:flex-row">
           <div class="dropdown">
             <button class="btn-menu">Cadastro</button>
-            <div class="dropdown-content rounded-b-lg">
-              <div class="flex flex-col justify-start justify-items-start text-sm mt-1 animate__animated animate__fadeIn">
+            <div class="rounded-b-lg dropdown-content">
+              <div class="flex flex-col justify-start mt-1 text-sm justify-items-start animate__animated animate__fadeIn">
                 <button @click="() => router.push({ name: 'CadastroUsuario' })" class="btn-dropdown">- Usuários</button>
-                <button @click="() => router.push({ name: 'CadastroCliente' })" class="btn-dropdown mt-1">- Clientes</button>
-                <button class="btn-dropdown mt-1">- Empresa</button>
-                <button class="btn-dropdown mt-1">- Estantes</button>
-                <button class="btn-dropdown mt-1">- Produtos</button>
+                <button @click="() => router.push({ name: 'CadastroCliente' })" class="mt-1 btn-dropdown">- Clientes</button>
+                <button class="mt-1 btn-dropdown">- Empresa</button>
+                <button @click="() => router.push({ name: 'CadastroEstante' })" class="mt-1 btn-dropdown">- Estantes</button>
+                <button @click="() => router.push({ name: 'CadastroProduto' })" class="mt-1 btn-dropdown">- Produtos</button>
               </div>
             </div>
           </div>
@@ -22,16 +22,20 @@
             <button class="btn-menu">Pedidos</button>
           </div>
           <div class="dropdown">
-            <button class="btn-menu">Relatórios</button>
-            <div class="dropdown-content rounded-b-lg">
-              <div class="flex flex-col justify-start justify-items-start text-sm mt-1 animate__animated animate__fadeIn">
+            <button class="btn-menu">Listagem</button>
+            <div class="rounded-b-lg dropdown-content">
+              <div class="flex flex-col justify-start mt-1 text-sm justify-items-start animate__animated animate__fadeIn">
                 <button @click="() => router.push({ name: 'ListaUsuario' })" class="btn-dropdown">- Usuários</button>
-                <button @click="() => router.push({ name: 'ListaCliente' })" class="btn-dropdown mt-1">- Clientes</button>
-                <button @click="handleSession" class="btn-dropdown mt-1">- Vendas</button>
-                <button class="btn-dropdown mt-1">- Pedidos</button>
-                <button class="btn-dropdown mt-1">- Produtos</button>
+                <button @click="() => router.push({ name: 'ListaCliente' })" class="mt-1 btn-dropdown">- Clientes</button>
+                <button class="mt-1 btn-dropdown">- Vendas</button>
+                <button class="mt-1 btn-dropdown">- Pedidos</button>
+                <button @click="() => router.push({ name: 'ListaEstante' })" class="mt-1 btn-dropdown">- Estantes</button>
+                <button @click="() => router.push({ name: 'ListaProduto' })" class="mt-1 btn-dropdown">- Produtos</button>
               </div>
             </div>
+          </div>
+          <div>
+            <button class="btn-menu">Relatórios</button>
           </div>
         </div>
         <div v-else class="flex">
@@ -46,7 +50,7 @@
           <button @click="handleLogin" class="btn-login">Faça o Login</button>
         </div>
         <div v-else>
-          <button @click="handleLogout" class="btn-login">{{ store.state.user.nome + ' | Sair' }}</button>
+          <button @click="handleLogout" class="mt-2 btn-login">{{ store.state.user.nome + ' | Sair' }}</button>
         </div>
       </div>
     </div>
@@ -68,10 +72,6 @@ export default {
       modal.open({ component: 'ModalLogin' })
     }
 
-    const handleSession = () => {
-      console.log(window.sessionStorage.getItem('user'))
-    }
-
     const handleLogout = () => {
       window.localStorage.removeItem('token')
       window.sessionStorage.removeItem('userId')
@@ -84,14 +84,14 @@ export default {
 
     const isAdmin = computed(() => store.getters.isAdmin)
 
-    return { store, isAdmin, handleLogin, handleLogout, handleSession, router }
+    return { store, isAdmin, handleLogin, handleLogout, router }
   }
 }
 </script>
 
 <style lang="postcss" scoped>
 .navbar-div {
-  @apply flex justify-between items-center bg-blue-400 px-4 w-full sm:w-10/12
+  @apply flex flex-col md:flex-row justify-between items-center bg-blue-400 px-4 w-full sm:w-10/12
 }
 
 .btn-login {

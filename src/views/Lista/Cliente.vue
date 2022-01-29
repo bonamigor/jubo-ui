@@ -131,7 +131,7 @@ export default {
           const { data, errors } = await services.cliente.deletarCliente(cliente.id)
           if (!errors) {
             Swal.fire(
-              'Exclusão de Usuário',
+              'Exclusão de Cliente',
               `${data.message}`,
               'success'
             )

@@ -3,7 +3,7 @@
   <modal-factory />
   <router-view />
   <div class="flex justify-center items-center text-center">
-    <div class="footer">jubo solucoes</div>
+    <div class="footer">© Copyright {{ ano }} - jubo solucoes</div>
   </div>
 </template>
 
@@ -39,8 +39,10 @@ export default {
       }
     })
 
-    return {
+    const ano = new Date().getFullYear()
 
+    return {
+      ano
     }
   }
 }

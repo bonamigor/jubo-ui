@@ -3,6 +3,8 @@ import router from '../router'
 import AuthService from './auth'
 import UserService from './user'
 import ClienteService from './cliente'
+import ProdutoService from './produtos'
+import EstanteService from './estante'
 
 const API_ENVS = {
   local: 'http://localhost:3000'
@@ -37,5 +39,7 @@ httpClient.interceptors.response.use((response) => response, (error) => {
 export default {
   auth: AuthService(httpClient),
   user: UserService(httpClient),
-  cliente: ClienteService(httpClient)
+  cliente: ClienteService(httpClient),
+  produto: ProdutoService(httpClient),
+  estante: EstanteService(httpClient)
 }
