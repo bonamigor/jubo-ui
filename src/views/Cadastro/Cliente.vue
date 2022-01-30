@@ -143,13 +143,13 @@ export default {
             'success'
           )
           event.target.reset()
+        } else {
+          Swal.fire(
+            'Cadastro de Cliente',
+            'Ocorreu um erro ao cadastrar o Cliente.',
+            'warning'
+          )
         }
-
-        Swal.fire(
-          'Cadastro de Cliente',
-          `${errors.statusText}`,
-          'warning'
-        )
       } catch (error) {
         toast.error('Ocorreu um erro ao cadastrar o Cliente.' + error)
       }

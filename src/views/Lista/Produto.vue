@@ -1,13 +1,12 @@
-
 <template>
 <div class="flex justify-center items-center p-4">
   <div class="flex flex-col w-10/12">
     <div class="flex flex-col justrify-center items-center my-5">
       <div class="text-4xl">
-        <h1>Lista de Usuários</h1>
+        <h1>Lista de Produtos</h1>
       </div>
       <div class="text-xl text-center mt-5">
-        Esses são os Usuários cadastrados no Banco de Dados.
+        Esses são os Produtos cadastrados no Banco de Dados.
       </div>
     </div>
     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -23,10 +22,10 @@
                   Nome
                 </th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  E-mail
+                  Preço de Custo
                 </th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Administrador
+                  Unidade Medida
                 </th>
                 <th scope="col" class="relative px-6 py-3">
                   <span class="sr-only">Ações</span>
@@ -34,22 +33,22 @@
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-              <tr v-for="user in users" :key="user.id">
+              <tr v-for="produto in produtos" :key="produto.id">
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm text-gray-900">{{ user.id }}</div>
+                  <div class="text-sm text-gray-900">{{ produto.id }}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm text-gray-900">{{ user.nome }}</div>
+                  <div class="text-sm text-gray-900">{{ produto.nome }}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm text-gray-900">{{ user.email }}</div>
+                  <div class="text-sm text-gray-900">{{ produto.preco_custo }}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm text-gray-900">{{ user.admin ? 'SIM' : 'NÃO' }}</div>
+                  <div class="text-sm text-gray-900">{{ produto.unidade_medida }}</div>
                 </td>
                 <td class="px-4 py-4 text-center text-sm font-medium">
-                  <a href="#" @click="editar(user)" class="text-indigo-600 hover:text-indigo-900">Editar</a> /
-                  <a href="#" @click="excluir(user)" class="text-indigo-600 hover:text-indigo-900">Excluir</a>
+                  <a href="#" @click="editar(produto)" class="text-indigo-600 hover:text-indigo-900">Editar</a> /
+                  <a href="#" @click="excluir(produto)" class="text-indigo-600 hover:text-indigo-900">Excluir</a>
                 </td>
               </tr>
             </tbody>
@@ -65,8 +64,7 @@
 import { onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import services from '../../services'
-import store from '../../store/user'
-import indexStore from '../../store/index'
+import produtoStore from '../../store/produtos'
 import Swal from 'sweetalert2'
 import { useToast } from 'vue-toastification'
 
@@ -75,38 +73,28 @@ export default {
     const router = useRouter()
 
     onMounted(() => {
-      fetchUsers()
+      fetchProdutos()
     })
 
-    const users = computed(() => store.getters.getUsers)
+    const produtos = computed(() => produtoStore.getters.getProdutos)
 
-    const fetchUsers = async () => {
-      const { data, errors } = await services.user.listarTodosOsUsuarios()
-
+    const fetchProdutos = async () => {
+      const { data, errors } = await services.produto.listarTodosOsProdutos()
+      console.log(data.produtos)
       if (!errors) {
-        store.dispatch('getUsers', data.users)
+        produtoStore.dispatch('getProdutos', data.produtos)
       }
     }
 
-    const editar = (user) => {
-      router.push({ name: 'AtualizarUsuario', params: { userid: user.id } })
+    const editar = (produto) => {
+      router.push({ name: 'AtualizarProduto', params: { id: produto.id } })
     }
 
-    const handleLogout = async () => {
-      window.localStorage.removeItem('token')
-      window.sessionStorage.removeItem('userId')
-      window.sessionStorage.removeItem('userName')
-      window.sessionStorage.removeItem('userEmail')
-      window.sessionStorage.removeItem('userAdmin')
-      store.dispatch('cleanCurrentUser')
-      router.push({ name: 'Home' })
-    }
-
-    const excluir = async (user) => {
+    const excluir = async (produto) => {
       try {
         Swal.fire({
-          title: 'Exclusão de Usuário',
-          text: 'Deseja mesmo excluir este Usuário?',
+          title: 'Exclusão de Produto',
+          text: 'Deseja mesmo excluir este Produto?',
           icon: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
@@ -114,21 +102,13 @@ export default {
           confirmButtonText: 'Sim, por favor!',
           cancelButtonText: 'Não.'
         }).then(async (dado) => {
-          const { data, errors } = await services.user.deletarUsuario(user.id)
+          const { data, errors } = await services.produto.deletarProduto(produto.id)
           if (!errors) {
             Swal.fire(
-              'Exclusão de Usuário',
+              'Exclusão de Produto',
               `${data.message}`,
               'success'
             )
-            document.location.reload(true)
-          } else if (!errors && user.nome === indexStore.state.user.nome) {
-            Swal.fire(
-              'Exclusão de Usuário',
-              `${data.message}`,
-              'success'
-            )
-            await handleLogout()
             document.location.reload(true)
           }
         })
@@ -138,8 +118,8 @@ export default {
     }
 
     return {
-      users,
-      fetchUsers,
+      produtos,
+      fetchProdutos,
       editar,
       excluir
     }

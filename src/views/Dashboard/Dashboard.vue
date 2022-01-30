@@ -1,36 +1,36 @@
 <template>
-<div class="flex justify-center items-center p-4">
+<div class="flex items-center justify-center p-4">
   <div class="flex flex-col w-10/12">
-    <div class="flex flex-col justrify-center items-center my-5">
+    <div class="flex flex-col items-center my-5 justrify-center">
       <div class="text-4xl">
         <h1>Olá Fulano!</h1>
       </div>
-      <div class="text-xl text-center mt-5">
+      <div class="mt-5 text-xl text-center">
         Esses são os últimos pedidos recebidos. Para visualizar mais detalhes como os produtos, <br>decidir uma data de entrega, etc, clique no botão Visualizar!
       </div>
     </div>
     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-      <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-          <table class="min-w-full divide-y divide-gray-200 border-2">
+      <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+        <div class="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg">
+          <table class="min-w-full border-2 divide-y divide-gray-200">
             <thead class="bg-gray-200">
               <tr>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                   ID
                 </th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                   Cliente
                 </th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                   Cidade
                 </th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                   Data de Criação
                 </th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                   Valor Total
                 </th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                   Confirmado?
                 </th>
                 <th scope="col" class="relative px-6 py-3">
@@ -57,15 +57,15 @@
                 </td>
                 <div v-if="order.confirmado">
                   <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-green-900 font-bold">CONFIRMADO</div>
+                    <div class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full">CONFIRMADO</div>
                   </td>
                 </div>
                 <div v-else>
                   <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-red-900 font-bold">NÃO CONFIRMADO</div>
+                    <div class="inline-flex px-2 text-xs font-semibold leading-5 text-red-800 bg-red-100 rounded-full">NÃO CONFIRMADO</div>
                   </td>
                 </div>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
                   <a href="#" class="text-indigo-600 hover:text-indigo-900">Visualizar</a>
                 </td>
               </tr>
@@ -202,23 +202,9 @@ const orders = [
   }
 ]
 
-const people = [
-  {
-    name: 'Jane Cooper',
-    title: 'Regional Paradigm Technician',
-    department: 'Optimization',
-    role: 'Admin',
-    email: 'jane.cooper@example.com',
-    image:
-      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60'
-  }
-  // More people...
-]
-
 export default {
   setup () {
     return {
-      people,
       orders
     }
   }
